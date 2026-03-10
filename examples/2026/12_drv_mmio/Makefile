@@ -1,8 +1,11 @@
-LINUX = linux-xlnx
+LINUX ?= linux-xlnx
 UBOOT = u-boot-xlnx
 DTXLNX = device-tree-xilinx
-
+KDIR = $(LINUX)/build
 UIMAGE = $(LINUX)/build/arch/arm/boot/uImage
+
+obj-m := hello-mmio.o
+PWD := $(shell pwd)
 
 export CROSS_COMPILE = arm-linux-gnueabihf-
 
@@ -21,6 +24,7 @@ boot.scr: boot.cmd
 	mkimage -A arm -T script -d boot.cmd boot.scr
 
 clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) ARCH=arm clean
 	rm -rf *.log *.jou .Xil
 	rm -rf fpga
 	rm -rf vitis
@@ -39,17 +43,16 @@ impl:
 vitis:
 	vitis -s build.py
 
-xsct:
-	xsct dts.tcl
-	gcc -I. -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o system.dts system-top.dts
-	dtc -I dts -O dtb -o system.dtb system.dts
-
-dtb:
+dts:
 	cp vitis/zynq_platform/export/zynq_platform/sw/boot/system.dtb system.dtb
+	dtc -I dtb -O dts -o system.dts system.dtb
+	sed -i '/gpio@41200000/,/};/ s/compatible = "xlnx,axi-gpio-2.0\\0xlnx,xps-gpio-1.00.a";/compatible = "drec-fpga-intro,mmio-dev";/' system.dts
+	dtc -I dts -O dtb -o system.dtb system.dts
 
 linux:
 	make -C $(LINUX) O=build ARCH=arm xilinx_zynq_defconfig
 	make -C $(LINUX) O=build ARCH=arm UIMAGE_LOADADDR=0x8000 -j`nproc` uImage
+	make -C $(LINUX) O=build ARCH=arm -j`nproc` modules
 
 uboot:
 	make -C $(UBOOT) O=build ARCH=arm xilinx_zynq_virt_defconfig
@@ -67,11 +70,14 @@ flash:
 	cp -f $(UIMAGE) $(SDCARD)
 	cp -f uramdisk.image.gz $(SDCARD)
 	cp -f boot.scr $(SDCARD)
-	cp -f blink.sh $(SDCARD)
+	cp -f hello-mmio.ko $(SDCARD)
 	sync $(SDCARD)
 
 gui:
 	vivado fpga/fpga.xpr
 
-.PHONY: all clean gui project bootgen flash vitis impl xsct dtb linux uboot download
+driver:
+	$(MAKE) -C $(KDIR) M=$(PWD) ARCH=arm modules
+
+.PHONY: all clean gui project bootgen flash vitis impl xsct dtb linux uboot download driver
 

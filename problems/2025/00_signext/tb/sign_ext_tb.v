@@ -27,53 +27,55 @@ sign_ext_structural #(
     .o_data(out_str)
 );
 
-task automatic check;
-    input [N-1:0] input_val;
-    reg   [M-1:0] expected_val;
-    begin
-        in = input_val;
-        #10;
+task automatic check (
+    input reg [N-1:0] i_val
+);
 
-        expected_val = $signed(input_val);
+reg [M-1:0] expected_val;
+begin
+    in = i_val;
+    #1;
 
-        run_cnt++;
+    expected_val = $signed(i_val);
 
-        if (out_beh !== expected_val || out_str !== expected_val) begin
-            $display("[ERROR] Input: %h | Exp: %h | Beh: %h | Str: %h",
-                        input_val, expected_val, out_beh, out_str);
-            err_cnt++;
-        end
+    run_cnt++;
+
+    if (out_beh !== expected_val || out_str !== expected_val) begin
+        $display("[FAIL] Input: %h | Exp: %h | Beh: %h | Str: %h",
+                    i_val, expected_val, out_beh, out_str);
+        err_cnt++;
     end
+end
 endtask
 
 initial begin
-        #1;
-        $display("Starting test suite for N=%0d -> M=%0d...", N, M);
+    #1;
+    $display("Starting test suite for N=%0d -> M=%0d...", N, M);
 
-        // Edge cases
-        check(0);
-        check({1'b0, {(N-1){1'b1}} });
-        check({1'b1, {(N-1){1'b0}} });
-        check({N{1'b1}});
+    // Edge cases
+    check(0);
+    check({1'b0, {(N-1){1'b1}} });
+    check({1'b1, {(N-1){1'b0}} });
+    check({N{1'b1}});
 
-        repeat(5) check($urandom);
+    repeat(5) check($urandom);
 
-        if (err_cnt == 0)
-            $display("-> N=%0d: PASSED (%0d tests)", N, run_cnt);
-        else
-            $display("-> N=%0d: FAILED (%0d errors)", N, err_cnt);
+    if (err_cnt == 0)
+        $display("-> N=%0d: PASSED (%0d tests)", N, run_cnt);
+    else
+        $display("-> N=%0d: FAILED (%0d errors)", N, err_cnt);
 end
 
 endmodule
 
 module sign_ext_tb;
 
-    initial begin
-        $dumpfile("tb.vcd");
-        $dumpvars(0, sign_ext_tb);
-    end
+initial begin
+    $dumpfile("tb.vcd");
+    $dumpvars(0, sign_ext_tb);
+end
 
-    tester #(.N(12), .M(32)) test_12 ();
-    tester #(.N(20), .M(32)) test_20 ();
+tester #(.N(12), .M(32)) test_12 ();
+tester #(.N(20), .M(32)) test_20 ();
 
 endmodule

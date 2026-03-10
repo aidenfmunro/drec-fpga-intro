@@ -17,9 +17,9 @@ wire [4:0] c_bexp = c[14:10];
 wire [9:0] c_mant = c[9:0];
 
 fp16`TEST_OP fp16`TEST_OP (
-    .i_a      (a),
-    .i_b      (b),
-    .o_res    (c)
+    .i_x      (a),
+    .i_y      (b),
+    .o_z      (c)
 );
 
 reg [3*16-1:0] test[`TEST_SIZE];

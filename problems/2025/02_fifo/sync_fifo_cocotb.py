@@ -18,6 +18,8 @@ class TB:
         self.dut.i_rd_en.value   = 0
         self.dut.rst_n.value     = 0
 
+        cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+
     async def reset(self):
         log.info("Reset")
 
@@ -60,7 +62,6 @@ class TB:
 
 @cocotb.test()
 async def test(dut):
-    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
     tb = TB(dut)
 
     await tb.reset()

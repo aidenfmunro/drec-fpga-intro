@@ -1,6 +1,6 @@
 module sync_fifo #(
     parameter ADDR_WIDTH = 8,
-    parameter DATA_WIDTH = 16
+    parameter DATA_WIDTH = 32
 )(
     input  wire                  clk,
     input  wire                  rst_n,
@@ -16,7 +16,7 @@ module sync_fifo #(
 
 localparam DEPTH = 2 ** ADDR_WIDTH;
 
-reg [DATA_WIDTH-1:0][DEPTH-1:0] mem;
+reg [DATA_WIDTH-1:0] mem [DEPTH-1:0];
 
 reg [ADDR_WIDTH:0] rd_ptr, wr_ptr;
 wire [ADDR_WIDTH-1:0] rd_addr, wr_addr;
@@ -46,6 +46,6 @@ assign wr_addr = wr_ptr[ADDR_WIDTH-1:0];
 assign o_wr_full  = (rd_addr == wr_addr) && (wr_ptr[ADDR_WIDTH] != rd_ptr[ADDR_WIDTH]);
 assign o_rd_empty = (rd_addr == wr_addr) && (wr_ptr[ADDR_WIDTH] == rd_ptr[ADDR_WIDTH]);
 
-assign o_rd_data = mem[rd_addr]; 
+assign o_rd_data = mem[rd_addr];
 
 endmodule

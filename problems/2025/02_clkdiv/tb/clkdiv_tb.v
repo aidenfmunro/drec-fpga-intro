@@ -27,24 +27,13 @@ initial begin
     $dumpfile("dump.vcd");
     $dumpvars(0, clkdiv_tb);
 
-    rst_n = 1'b0;
+    rst_n <= 1'b0;
     #(CLK_PERIOD * 2);
-    rst_n = 1'b1;
+    rst_n <= 1'b1;
 
     repeat ( (SRC_FREQ/DST_FREQ) * 4 ) @(posedge clk_src);
 
     $finish;
 end
-
-
-
-
-
-
-
-
-
-
-
 
 endmodule

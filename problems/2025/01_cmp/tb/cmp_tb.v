@@ -6,7 +6,7 @@ reg  [31:0] rs1;
 reg  [31:0] rs2;
 reg  [2:0]  op;
 
-wire        tkn; 
+wire        tkn;
 
 `include "cmp_ops.vh"
 
@@ -25,7 +25,8 @@ task automatic check (
     input reg [31:0] i_rs2,
     input reg [2:0]  i_op,
     input reg        expected_tkn
-); 
+);
+
 begin
     rs1 = i_rs1;
     rs2 = i_rs1;
@@ -36,7 +37,7 @@ begin
     run_cnt++;
 
     if (tkn != expected_tkn) begin
-        $display("[FAIL]: a(%h), b(%h), op(%b), taken(%b), exp(%b)", 
+        $display("[FAIL]: a(%h), b(%h), op(%b), taken(%b), exp(%b)",
                   rs1, rs2, op, tkn, expected_tkn);
         err_cnt++;
     end
@@ -75,7 +76,7 @@ initial begin
         $display("-> FAILED (%0d errors out of %0d tests)", err_cnt, run_cnt);
     end
 
-    $finish; 
+    $finish;
 end
 
 endmodule

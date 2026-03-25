@@ -6,7 +6,7 @@ module timer (
 
 reg [11:0] cnt;
 
-assign o_data = {cnt[11:4], 4'b0, cnt[3:0]};
+assign o_data = {cnt[11:4], cnt[3:0], 4'b0};
 
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin

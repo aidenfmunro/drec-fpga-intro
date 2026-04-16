@@ -1,8 +1,10 @@
+`include "config.vh"
+
 module mem_xbar #(
-    parameter DATA_START,
-    parameter DATA_LIMIT,
-    parameter MMIO_START,
-    parameter MMIO_LIMIT
+    parameter MMIO_START = 30'h0400,
+    parameter MMIO_LIMIT = 30'h3FFF,
+    parameter DATA_START = 30'h0000,
+    parameter DATA_LIMIT = 30'h03FF
 ) (
     input  wire [29:0] i_addr,
     input  wire [31:0] i_data,
@@ -10,15 +12,15 @@ module mem_xbar #(
     input  wire [3:0]  i_mask,
     output wire [31:0] o_data,
     output wire [29:0] o_dmem_addr,
-    output wire [3:0]  o_dmem_data,
-    output wire [31:0] o_dmem_mask,
+    output wire [31:0] o_dmem_data,
+    output wire [3:0]  o_dmem_mask,
     output             o_dmem_wren,
     input  wire [31:0] i_dmem_data,
     output wire [29:0] o_mmio_addr,
     output wire [31:0] o_mmio_data,
     output wire        o_mmio_wren,
-    output wire [3:0]  o_mmio_mask, 
-    input  wire [31:0] i_mmio_data   
+    output wire [3:0]  o_mmio_mask,
+    input  wire [31:0] i_mmio_data
 );
 
 assign dmem_sel = (DATA_START >= i_addr) && (i_addr <= DATA_LIMIT);

@@ -42,6 +42,7 @@ hex_display hex_display(
     .clk        (clk            ),
     .rst_n      (rst_n          ),
     .i_data     (hexd_data      ),
+    .i_dots     (4'b0           ),
     .i_we       (hexd_wren      ),
     .o_anodes   (anodes         ),
     .o_segments (segments       )

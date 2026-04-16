@@ -30,8 +30,7 @@ imem #(
     .ADDR_WIDTH     (`IMEM_ADDR_WIDTH),
     .INIT_FILE      (`IMEM_FILE_TXT  ),
     .DATA_WIDTH     (32              )
-)
-imem(
+) imem (
     .i_addr         (core2imem_addr  ),
     .o_data         (imem2core_data  )
 );
@@ -39,8 +38,7 @@ imem(
 dmem #(
      .ADDR_WIDTH    (`DMEM_ADDR_WIDTH),
      .DATA_WIDTH    (32              )
-)
-dmem(
+) dmem (
      .clk           (clk             ),
      .i_addr        (xbar2dmem_addr  ),
      .i_data        (xbar2dmem_data  ),
@@ -55,7 +53,7 @@ mem_xbar #(
     .MMIO_START    (`XBAR_MMIO_START),
     .MMIO_LIMIT    (`XBAR_MMIO_LIMIT)
 )
-mem_xbar(
+mem_xbar (
     .i_addr        (core2xbar_addr  ),
     .i_data        (core2xbar_data  ),
     .i_wren        (core2xbar_wren  ),
@@ -73,7 +71,7 @@ mem_xbar(
     .i_mmio_data   (i_mmio_data     )
 );
 
-core core(
+core core (
     .clk           (clk             ),
     .rst_n         (rst_n           ),
     .i_instr_data  (imem2core_data  ),

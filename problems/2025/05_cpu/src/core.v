@@ -159,7 +159,7 @@ wire [3:0]  lsu2mem_mask;
 wire lsu2mem_we;
 
 lsu lsu (
-    .i_addr(alu_res[31:2]),
+    .i_addr(alu_res[29:0]), // which addr?
     .i_data    (src2),
     .i_funct3  (funct3),
     .i_wr_en   (ctrl2lsu_wr_en),

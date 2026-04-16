@@ -1,3 +1,5 @@
+`include "alu_ops.vh"
+
 module control (
     input wire [31:0] i_instr,
     output reg [1:0]  o_alu_sel1,
@@ -68,7 +70,7 @@ always @(*) begin
 end
 
 always @(*) begin
-    o_alu_op = 4'b0; // default to add
+    o_alu_op = ALU_ADD; // default to add
 
     if (opcode == OP) begin
         o_alu_op = {i_instr[30], funct3};

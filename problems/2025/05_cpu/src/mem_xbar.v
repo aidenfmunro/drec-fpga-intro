@@ -23,8 +23,8 @@ module mem_xbar #(
     input  wire [31:0] i_mmio_data
 );
 
-assign dmem_sel = (DATA_START >= i_addr) && (i_addr <= DATA_LIMIT);
-assign mmio_sel = (MMIO_START >= i_addr) && (i_addr <= MMIO_LIMIT);
+assign dmem_sel = (i_addr >= DATA_START) && (i_addr <= DATA_LIMIT);
+assign mmio_sel = (i_addr >= MMIO_START) && (i_addr <= MMIO_LIMIT);
 
 assign o_dmem_addr = i_addr;
 assign o_mmio_addr = i_addr;

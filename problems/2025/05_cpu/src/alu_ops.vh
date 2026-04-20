@@ -1,10 +1,10 @@
-localparam ALU_ADD  = 4'b0_000;
-localparam ALU_SUB  = 4'b1_000;
-localparam ALU_SLL  = 4'b0_001;
-localparam ALU_SRL  = 4'b0_101;
-localparam ALU_SRA  = 4'b1_101;
-localparam ALU_SLT  = 4'b0_010;
-localparam ALU_SLTU = 4'b0_011;
-localparam ALU_XOR  = 4'b0_100;
-localparam ALU_OR   = 4'b0_110;
-localparam ALU_AND  = 4'b0_111;
+`define ALU_ADD  4'b0_000
+`define ALU_SUB  4'b1_000
+`define ALU_SLL  4'b0_001
+`define ALU_SRL  4'b0_101
+`define ALU_SRA  4'b1_101
+`define ALU_SLT  4'b0_010
+`define ALU_SLTU 4'b0_011
+`define ALU_XOR  4'b0_100
+`define ALU_OR   4'b0_110
+`define ALU_AND  4'b0_111

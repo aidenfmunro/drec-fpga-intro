@@ -12,24 +12,21 @@ module core (
     input  wire [31:0]  i_mem_data
 );
 
+wire branch;
+wire jump;
+wire cmp_taken;
+wire taken = (branch && cmp_taken) || jump;
 
+wire [1:0] ctrl2alu_sel1;
+wire [1:0] ctrl2alu_sel2;
+wire [1:0] ctrl2alu_sel_wb;
+wire [3:0] ctrl2alu_op;
+wire [2:0] ctrl2cmp_op;
+wire       ctrl2lsu_wr_en;
 
-reg  [29:0]  pc;
-reg  [29:0]  pc_next;
-wire [29:0] pc_inc;
-
-assign pc_inc = pc + 1;
-
-always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-        pc      <= 0;
-        pc_next <= 0;
-    end else begin
-        pc <= pc_next;
-    end
-end
-
-assign o_instr_addr = pc;
+wire [31:0] alu_rs1;
+wire [31:0] alu_rs2;
+wire [31:0] alu_res;
 
 wire [19:15] rs1 = i_instr_data[19:15];
 wire [24:20] rs2 = i_instr_data[24:20];
@@ -49,8 +46,32 @@ wire [31:0] imm_s = {{21{s_bit}}, i_instr_data[30:25], i_instr_data[11:7]};
 wire [2:0] funct3 = i_instr_data[14:12];
 
 wire [31:0] dst;
+wire        dst_en;
 
-wire dst_en;
+wire [31:0] lsu_data;
+wire [29:0] lsu2mem_addr;
+wire [31:0] lsu2mem_data;
+wire [3:0]  lsu2mem_mask;
+wire        lsu2mem_we;
+
+reg  [29:0] pc;
+wire [29:0] pc_inc;
+
+assign o_instr_addr = pc;
+
+assign pc_inc = pc + 1;
+
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        pc      <= 0;
+    end else begin
+        if (taken) begin
+            pc <= alu_res[31:2];
+        end else begin
+            pc <= pc_inc;
+        end
+    end
+end
 
 regfile #(
     .DATA_WIDTH(32),
@@ -66,15 +87,6 @@ regfile #(
     .i_wr_data (dst)
 );
 
-wire [1:0] ctrl2alu_sel1;
-wire [1:0] ctrl2alu_sel2;
-wire [1:0] ctrl2alu_sel_wb;
-wire [3:0] ctrl2alu_op;
-wire [2:0] ctrl2cmp_op;
-
-wire [31:0] alu_rs1;
-wire [31:0] alu_rs2;
-wire [31:0] alu_res;
 
 mux4 #(
     .WIDTH(32)
@@ -98,8 +110,6 @@ mux4 #(
     .o_data(alu_rs2)
 );
 
-wire [31:0] lsu_data;
-
 mux4 #(
     .WIDTH(32)
 ) mux_wb (
@@ -110,11 +120,6 @@ mux4 #(
     .i_data3({pc_inc, 2'b0}),
     .o_data(dst)
 );
-
-wire branch;
-wire jump;
-wire cmp_taken;
-wire ctrl2lsu_wr_en;
 
 control control (
     .i_instr   (i_instr_data),
@@ -142,21 +147,6 @@ cmp cmp (
     .i_op (ctrl2cmp_op),
     .o_tkn(cmp_taken)
 );
-
-wire taken = (branch && cmp_taken) || jump;
-
-always @(posedge clk) begin
-    if (taken) begin
-        pc_next <= alu_res[31:2];
-    end else begin
-        pc_next <= pc_inc;
-    end
-end
-
-wire [29:0] lsu2mem_addr;
-wire [31:0] lsu2mem_data;
-wire [3:0]  lsu2mem_mask;
-wire lsu2mem_we;
 
 lsu lsu (
     .i_addr(alu_res[29:0]), // which addr?

@@ -70,7 +70,7 @@ always @(*) begin
 end
 
 always @(*) begin
-    o_alu_op = ALU_ADD; // default to add
+    o_alu_op = `ALU_ADD; // default to add
 
     if (opcode == OP) begin
         o_alu_op = {i_instr[30], funct3};

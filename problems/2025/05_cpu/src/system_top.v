@@ -38,11 +38,21 @@ mmio_xbar mmio_xbar(
     .o_hexd_wren(hexd_wren      )
 );
 
+reg [15:0] hexd_data_reg;
+
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        hexd_data_reg <= 16'b0;
+    end else if (hexd_wren) begin
+        hexd_data_reg <= hexd_data;
+    end
+end
+
 hex_display hex_display(
     .clk        (clk            ),
     .rst_n      (rst_n          ),
-    .i_data     (hexd_data      ),
-    .i_we       (hexd_wren      ),
+    .i_data     (hexd_data_reg  ),
+    .i_dots     (4'b0           ),
     .o_anodes   (anodes         ),
     .o_segments (segments       )
 );

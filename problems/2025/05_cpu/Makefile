@@ -5,11 +5,12 @@ RTL_LIST := 		\
 	src/core.v		\
 	src/alu.v		\
 	src/cmp.v		\
-	src/reg_file.v	\
+	src/regfile.v	\
 	src/control.v	\
 	src/imem.v		\
 	src/dmem.v		\
 	src/mem_xbar.v	\
+	src/mmio_xbar.v \
 	src/lsu.v		\
 	src/mux4.v		\
 

@@ -49,10 +49,6 @@ wire [31:0] dst;
 wire        dst_en;
 
 wire [31:0] lsu_data;
-wire [29:0] lsu2mem_addr;
-wire [31:0] lsu2mem_data;
-wire [3:0]  lsu2mem_mask;
-wire        lsu2mem_we;
 
 reg  [29:0] pc;
 wire [29:0] pc_inc;
@@ -91,34 +87,34 @@ regfile #(
 mux4 #(
     .WIDTH(32)
 ) mux1 (
-    .i_sel (ctrl2alu_sel1),
+    .i_sel  (ctrl2alu_sel1),
     .i_data0(imm_u),
     .i_data1(imm_b),
     .i_data2(imm_j),
-    .i_data3(src1),
-    .o_data(alu_rs1)
+    .i_data3 (src1),
+    .o_data  (alu_rs1)
 );
 
 mux4 #(
     .WIDTH(32)
 ) mux2 (
-    .i_sel (ctrl2alu_sel2),
+    .i_sel  (ctrl2alu_sel2),
     .i_data0(src2),
     .i_data1(imm_i),
     .i_data2(imm_s),
     .i_data3({pc, 2'b0}),
-    .o_data(alu_rs2)
+    .o_data (alu_rs2)
 );
 
 mux4 #(
     .WIDTH(32)
 ) mux_wb (
-    .i_sel (ctrl2alu_sel_wb),
+    .i_sel  (ctrl2alu_sel_wb),
     .i_data0(imm_u),
     .i_data1(alu_res),
     .i_data2(lsu_data),
     .i_data3({pc_inc, 2'b0}),
-    .o_data(dst)
+    .o_data (dst)
 );
 
 control control (
@@ -149,21 +145,16 @@ cmp cmp (
 );
 
 lsu lsu (
-    .i_addr(alu_res[29:0]), // which addr?
+    .i_addr(alu_res[31:2]), // which addr?
     .i_data    (src2),
     .i_funct3  (funct3),
     .i_wr_en   (ctrl2lsu_wr_en),
-    .o_mem_addr(lsu2mem_addr),
-    .o_mem_data(lsu2mem_data),
-    .o_mem_we  (lsu2mem_we),
-    .o_mem_mask(lsu2mem_mask),
+    .o_mem_addr(o_mem_addr),
+    .o_mem_data(o_mem_data),
+    .o_mem_we  (o_mem_we),
+    .o_mem_mask(o_mem_mask),
     .i_mem_data(i_mem_data),
     .o_data    (lsu_data)
 );
-
-assign o_mem_addr = lsu2mem_addr;
-assign o_mem_data = lsu2mem_data;
-assign o_mem_we   = lsu2mem_we;
-assign o_mem_mask = lsu2mem_mask;
 
 endmodule

@@ -168,6 +168,7 @@ cmp cmp (
 );
 
 lsu lsu (
+    .clk(clk),
     .i_addr(alu_res[31:2]), // which addr?
     .i_data    (src2),
     .i_funct3  (funct3),

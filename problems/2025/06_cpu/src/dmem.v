@@ -39,7 +39,7 @@ end
 assign o_data = mem[addr];
 
 `else
- 
+
 ram1rw32x256 ram1rw32x256(
     .address    (i_addr ),
     .byteena    (i_mask ),

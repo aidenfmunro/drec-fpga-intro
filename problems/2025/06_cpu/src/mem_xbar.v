@@ -39,12 +39,20 @@ assign o_mmio_mask = i_mask;
 assign o_dmem_wren = dmem_sel && i_wren;
 assign o_mmio_wren = mmio_sel && i_wren;
 
+reg dmem_sel_d;
+reg mmio_sel_d;
+
+always @(posedge clk) begin
+    dmem_sel_d <= dmem_sel;
+    mmio_sel_d <= mmio_sel;
+end
+
 always @(*) begin
     o_data = 32'bX;
 
-    if (dmem_sel)
+    if (dmem_sel_d)
         o_data = i_dmem_data;
-    if (mmio_sel)
+    if (mmio_sel_d)
         o_data = i_mmio_data;
 end
 

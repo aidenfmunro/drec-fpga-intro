@@ -33,6 +33,7 @@ RTL_LIST += 		\
 	src/mem_xbar.v	\
 	src/lsu.v		\
 	src/mux4.v		\
+	src/mmio_xbar.v \
 
 ifeq ($(GUI), 1)
 VSIM_FLAGS :=

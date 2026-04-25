@@ -31,7 +31,7 @@ wire [31:0] dmem2xbar_data;
 imem imem(
     .clk        (clk            ),
     .rst_n      (rst_n          ),
-    .i_stall    (core2imem_stall),
+    .i_stall    (1'b0),
     .i_addr     (core2imem_addr ),
     .o_data     (imem2core_data )
 );

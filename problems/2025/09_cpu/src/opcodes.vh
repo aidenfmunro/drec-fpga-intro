@@ -1,0 +1,9 @@
+`define OP     5'b01100
+`define OP_IMM 5'b00100
+`define STORE  5'b01000
+`define LOAD   5'b00000
+`define BRANCH 5'b11000
+`define JALR   5'b11001
+`define JAL    5'b11011
+`define AUIPC  5'b00101
+`define LUI    5'b01101

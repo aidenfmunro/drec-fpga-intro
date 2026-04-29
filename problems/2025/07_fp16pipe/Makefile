@@ -5,7 +5,7 @@ PIPE 	  ?= 0
 
 TB_LIST := fp16u_tb.v
 
-RTL_LIST := fp16add_pipe0.v fp16add_pipe1.v fp16add_pipe2.v fp16add_pipe3.v fp16add_pipe4.v fp16add_pipe5.v
+RTL_LIST := fp16add_pipe0.v fp16add_pipe1.v fp16add_pipe2.v fp16add_pipe3.v fp16add_pipe4.v
 
 sim: $(TB_LIST) $(RTL_LIST)
 	python3 test.py $(TEST_SIZE) $(TEST_OP) > test.txt

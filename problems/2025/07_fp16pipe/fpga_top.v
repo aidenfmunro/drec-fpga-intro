@@ -18,7 +18,7 @@ always @(posedge CLK) begin
     y <= i_y;
 end
 
-fp16add_pipe3 fp16add_pipe (
+fp16add_pipe4 fp16add_pipe (
     .clk(CLK),
     .i_x(x),
     .i_y(y),

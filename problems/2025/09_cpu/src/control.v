@@ -3,10 +3,6 @@
 `include "imm_types.vh"
 
 module control (
-<<<<<<< Updated upstream
-    input wire clk,
-=======
->>>>>>> Stashed changes
     input  wire [31:0] i_instr,
     input  wire [4:0]  i_rd,
     input  wire        i_flush,
@@ -19,11 +15,7 @@ module control (
     output reg         o_pc_sel,
     output reg         o_wb_sel1,
     output reg         o_wb_sel2,
-<<<<<<< Updated upstream
-    input  wire        i_wb_en_d,
-=======
     input  wire        i_bypass_en,
->>>>>>> Stashed changes
     output wire        o_wb_en,
     output wire        o_wr_en,
     output wire        o_bypass_sel1,
@@ -103,12 +95,7 @@ end
 assign o_wr_en = (opcode == `STORE) && !i_flush;
 assign o_wb_en = ((opcode != `STORE) && (opcode != `BRANCH)) && !i_flush;
 
-<<<<<<< Updated upstream
-assign o_bypass_sel1 = (i_rd == rs1) && (i_rd != 5'b0) && i_wb_en_d;
-assign o_bypass_sel2 = (i_rd == rs2) && (i_rd != 5'b0) && i_wb_en_d;
-=======
 assign o_bypass_sel1 = (i_rd == rs1) && (i_rd != 5'b0) && i_bypass_en;
 assign o_bypass_sel2 = (i_rd == rs2) && (i_rd != 5'b0) && i_bypass_en;
->>>>>>> Stashed changes
 
 endmodule

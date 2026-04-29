@@ -153,109 +153,53 @@ mux3 #(
     .WIDTH(32)
 ) mux_alu_1 (
     .i_sel  (ctrl2alu_sel1),
-<<<<<<< Updated upstream
-    .i_data0(imm_d),
-    .i_data1(src1),
-    .i_data2(0),
-    .o_data (alu_rs1)
-=======
     .i_data0(imm_d        ),
     .i_data1(src1         ),
     .i_data2(0            ),
     .o_data (alu_rs1      )
->>>>>>> Stashed changes
 );
 
 mux3 #(
     .WIDTH(32)
 ) mux_alu_2 (
     .i_sel  (ctrl2alu_sel2),
-<<<<<<< Updated upstream
-    .i_data0(imm_d),
-    .i_data1(src2),
-    .i_data2({pc_d, 2'b0}),
-    .o_data (alu_rs2)
-=======
     .i_data0(imm_d        ),
     .i_data1(src2         ),
     .i_data2({pc_d, 2'b0} ),
     .o_data (alu_rs2      )
->>>>>>> Stashed changes
 );
 
 mux2 #(
     .WIDTH(32)
 ) mux_wb_1 (
-<<<<<<< Updated upstream
-    .i_sel  (ctrl2wb_sel1),
-    .i_data0(alu_res),
-    .i_data1({pc_inc_d, 2'b0}),
-    .o_data (wb1_res)
-=======
     .i_sel  (ctrl2wb_sel1    ),
     .i_data0(alu_res         ),
     .i_data1({pc_inc_d, 2'b0}),
     .o_data (wb1_res         )
->>>>>>> Stashed changes
 );
 
 mux2 #(
     .WIDTH(32)
 ) mux_wb_2 (
     .i_sel  (ctrl2wb_sel2_d),
-<<<<<<< Updated upstream
-    .i_data0(wb1_res_d),
-    .i_data1(lsu_data),
-    .o_data (wb)
-=======
     .i_data0(wb1_res_d     ),
     .i_data1(lsu_data      ),
     .o_data (wb            )
->>>>>>> Stashed changes
 );
 
 mux2 #(
     .WIDTH(32)
 ) wb_bypass_1 (
     .i_sel  (ctrl2bypass_sel1),
-<<<<<<< Updated upstream
-    .i_data0(src1_d),
-    .i_data1(wb),
-    .o_data (src1)
-=======
     .i_data0(src1_d          ),
     .i_data1(wb              ),
     .o_data (src1            )
->>>>>>> Stashed changes
 );
 
 mux2 #(
     .WIDTH(32)
 ) wb_bypass_2 (
     .i_sel  (ctrl2bypass_sel2),
-<<<<<<< Updated upstream
-    .i_data0(src2_d),
-    .i_data1(wb),
-    .o_data (src2)
-);
-
-control control (
-    .i_instr       (i_instr_data_d),
-    .i_rd          (rd_d),
-    .i_flush       (flush),
-    .o_alu_sel1    (ctrl2alu_sel1),
-    .o_alu_sel2    (ctrl2alu_sel2),
-    .o_alu_op      (ctrl2alu_op),
-    .o_cmp_op      (ctrl2cmp_op),
-    .o_branch      (branch),
-    .o_jump        (jump),
-    .o_pc_sel      (pc_sel),
-    .o_wb_sel1     (ctrl2wb_sel1),
-    .o_wb_sel2     (ctrl2wb_sel2),
-    .i_wb_en_d     (wb_en_d),
-    .o_wb_en       (wb_en),
-    .o_wr_en       (ctrl2lsu_wr_en),
-=======
     .i_data0(src2_d          ),
     .i_data1(wb              ),
     .o_data (src2            )
@@ -277,23 +221,15 @@ control control (
     .i_bypass_en   (wb_en_d         ),
     .o_wb_en       (wb_en           ),
     .o_wr_en       (ctrl2lsu_wr_en  ),
->>>>>>> Stashed changes
     .o_bypass_sel1 (ctrl2bypass_sel1),
     .o_bypass_sel2 (ctrl2bypass_sel2)
 );
 
 alu alu (
-<<<<<<< Updated upstream
-    .i_rs1(alu_rs1),
-    .i_rs2(alu_rs2),
-    .i_op (ctrl2alu_op),
-    .o_rd (alu_res)
-=======
     .i_rs1(alu_rs1    ),
     .i_rs2(alu_rs2    ),
     .i_op (ctrl2alu_op),
     .o_rd (alu_res    )
->>>>>>> Stashed changes
 );
 
 cmp cmp (
@@ -305,19 +241,6 @@ cmp cmp (
 
 lsu lsu (
     .clk(clk),
-<<<<<<< Updated upstream
-    .i_addr    (src1),
-    .i_offset  (imm_d),
-    .i_data    (src2),
-    .i_funct3  (funct3),
-    .i_wr_en   (ctrl2lsu_wr_en),
-    .o_mem_addr(o_mem_addr),
-    .o_mem_data(o_mem_data),
-    .o_mem_we  (o_mem_we),
-    .o_mem_mask(o_mem_mask),
-    .i_mem_data(i_mem_data),
-    .o_data    (lsu_data)
-=======
     .i_addr    (src1          ),
     .i_offset  (imm_d         ),
     .i_data    (src2          ),
@@ -329,7 +252,6 @@ lsu lsu (
     .o_mem_mask(o_mem_mask    ),
     .i_mem_data(i_mem_data    ),
     .o_data    (lsu_data      )
->>>>>>> Stashed changes
 );
 
 endmodule
